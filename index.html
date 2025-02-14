@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anagram trainer</title>
+    <meta name="description" content="A brief description of your webpage">
+    <meta name="author" content="Your Name">
+    <style>
+        body {
+            background-color: black;
+            margin-top: 5rem;
+            color: white;
+            font-size: 5rem;
+            text-align: center;
+        }
+
+        #originalWord {
+            margin-top: 5rem;
+            background-color: white;
+            border-radius: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="anagram">
+    </div>
+    <div id="originalWord" onclick="unsetBackgroundColor('originalWord')">
+    </div>
+
+    <script>
+        const vowels = ["а", "е", "и", "о", "у", "ъ", "ю", "я"];
+        const consonants = ["б", "в", "г", "д", "ж", "з", "й", "к", "л", "м", "н", "п", "р", "с", "т", "ф", "х", "ц", "ч", "ш", "щ", "ь"];
+
+        const words = ["разговори", "идентичност", "оптимизация", "население", "компромисен", "комуникация", "анализиране", "представител", "автономия", "институция", "образователен", "предлагане", "безопасност", "инициативност", "капитализъм", "стратегия", "историята", "екологичен", "общественост", "административен", "инфраструктура", "социализъм", "информация", "представя", "регулиране", "здравеопазване", "индустриален", "интелектуален", "правосъдие", "компетентност", "съхранение", "цивилизация", "демокрация", "конкурентен", "сигурност", "еволюция", "инициатива", "разузнаване", "конституция", "енергетика", "мобилизация", "социология", "корпорация", "регулация", "производителност", "анализиране", "координация", "конкуренция", "електроника", "технологичен", "сътрудничество", "взаимодействие", "благосъстояние", "традиция", "транспортиране", "инвестиция", "архитектура", "републикански", "кореспонденция", "адаптация", "симулация", "превенция", "квалификация", "наблюдение", "екосистема", "специализация", "разнообразие", "химикали", "образование", "изследвания", "стандартизация", "консервация", "развитие", "привилегия", "въображение", "конвенция", "технология", "структура", "артикулация", "манипулация", "конфигурация", "просперитет", "интерпретация", "навигация", "информационен", "интелигентност", "журналистика", "комуникационен", "дигитализация", "иновация", "психологически", "дестабилизация", "конвергенция", "мотивация", "правоспособност", "културология", "оркестрация", "реализация", "универсалност", "електрификация", "философия", "асимилация", "реновация"];
+
+        function getRandomWord(words) {
+            return words[Math.floor(Math.random() * words.length)];
+        }
+
+        function getWordWithLettersFromGroupOnly(word, group) {
+            let result = "";
+
+            for (let char of word.toLowerCase()) {
+                if (group.includes(char)) {
+                    result += char;
+                }
+            }
+
+            return result;
+        }
+
+        function shuffleString(inputString) {
+            const arr = inputString.split("");
+            for (let i = arr.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+
+            return arr.join("");
+        }
+
+        function generateAnagram(originalWord) {
+            const vowelsInWord = getWordWithLettersFromGroupOnly(originalWord, vowels);
+            let shuffledVowels = shuffleString(vowelsInWord);
+
+            const consonantsInWord = getWordWithLettersFromGroupOnly(originalWord, consonants);
+            let shuffledConsonants = shuffleString(consonantsInWord);
+
+            let anagram = "";
+            while (shuffledVowels.length !== 0 || shuffledConsonants.length !== 0) {
+                if (shuffledConsonants.length > 0) {
+                    anagram += shuffledConsonants[0];
+                    shuffledConsonants = shuffledConsonants.slice(1);
+                }
+
+                if (shuffledVowels.length > 0) {
+                    anagram += shuffledVowels[0];
+                    shuffledVowels = shuffledVowels.slice(1);
+                }
+
+                if (shuffledConsonants.length > 0) {
+                    anagram += shuffledConsonants[0];
+                    shuffledConsonants = shuffledConsonants.slice(1);
+                }
+            }
+
+            return anagram;
+        }
+
+        function unsetBackgroundColor(elementId) {
+            const element = document.getElementById(elementId);
+            element.style.backgroundColor = "transparent";
+        }
+
+        function main() {
+            const originalWord = getRandomWord(words);
+            const originalWordContainer = document.getElementById("originalWord");
+            originalWordContainer.innerText = originalWord;
+
+            const anagram = generateAnagram(originalWord);
+            const anagramContainer = document.getElementById("anagram");
+            anagramContainer.innerText = anagram;
+        }
+
+        main();
+
+    </script>
+</body>
+
+</html>
